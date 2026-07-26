@@ -1,6 +1,6 @@
 /**
  * EmocionArte Main Application Logic
- * Coordinates tabs, stories modal, daily emotion check-in, breathing exercise & gamification.
+ * Implements Global Mouse Hover & Mobile Touch Speech Reader for pre-reader kids!
  */
 
 class App {
@@ -15,20 +15,65 @@ class App {
     init() {
         this.renderStoriesGrid();
         this.updateStarsDisplay();
+
+        // Attach global hover/touch listener for kids
+        this.setupGlobalTouchAndHoverReader();
+
+        // Welcome audio instruction for non-readers
+        setTimeout(() => {
+            if (soundEngine.speechEnabled) {
+                soundEngine.speak('¡Hola amiguito! Pasa el ratón o toca cualquier dibujo para escucharlo.');
+            }
+        }, 1000);
+    }
+
+    // Global listener: Speaks text of any hovered or touched button, card, or heading!
+    setupGlobalTouchAndHoverReader() {
+        const speakTarget = (target) => {
+            // Find closest clickable or readable element
+            const el = target.closest('button, .story-card, .btn-emotion-bubble, .btn-emotion-choice, .color-bubble-btn, .nav-tab, .semaforo-item, h2, h3, p');
+            if (!el) return;
+
+            // Extract readable text
+            let textToSpeak = el.getAttribute('aria-label') || el.getAttribute('title') || el.innerText || el.textContent;
+            
+            if (textToSpeak) {
+                // Trim long text if it's a full container to keep it short and friendly
+                if (textToSpeak.length > 80) {
+                    const heading = el.querySelector('h2, h3, h4, .story-title, .brand-title');
+                    if (heading) textToSpeak = heading.innerText;
+                    else textToSpeak = textToSpeak.substring(0, 80);
+                }
+
+                // Add visual highlight glow
+                document.querySelectorAll('.speak-active').forEach(node => node.classList.remove('speak-active'));
+                el.classList.add('speak-active');
+
+                soundEngine.speakHoverOrTouch(textToSpeak);
+            }
+        };
+
+        // Desktop mouse hover
+        document.body.addEventListener('mouseover', (e) => {
+            speakTarget(e.target);
+        });
+
+        // Mobile touch screen
+        document.body.addEventListener('touchstart', (e) => {
+            speakTarget(e.target);
+        }, { passive: true });
     }
 
     switchTab(tabId) {
         soundEngine.playPop(500);
         soundEngine.stopSpeech();
 
-        // Update tabs active class
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.classList.remove('active');
         });
         const activeBtn = Array.from(document.querySelectorAll('.nav-tab')).find(b => b.getAttribute('onclick').includes(`'${tabId}'`));
         if (activeBtn) activeBtn.classList.add('active');
 
-        // Hide all views, show selected
         document.querySelectorAll('.view-section').forEach(sec => {
             sec.classList.remove('active');
         });
@@ -37,7 +82,19 @@ class App {
 
         this.currentTab = tabId;
 
-        // Auto-initialize games if games tab selected
+        const tabAudios = {
+            inicio: 'Inicio. Toca una carita para decirme cómo te sientes hoy.',
+            cuentos: 'Cuentos. Toca un libro para escuchar su historia.',
+            juegos: 'Zona de juegos. Toca un juego para divertirte.',
+            calma: 'Zona de calma. Vamos a respirar juntos.',
+            logros: 'Tus medallas y estrellas ganadas.',
+            docentes: 'Sección de guía para profesores y padres.'
+        };
+
+        if (tabAudios[tabId]) {
+            soundEngine.speak(tabAudios[tabId]);
+        }
+
         if (tabId === 'juegos') {
             this.openGame('cazador');
         }
@@ -64,9 +121,9 @@ class App {
             btn.innerHTML = '🔇 Voz Apagada';
             btn.style.opacity = '0.6';
         } else {
-            btn.innerHTML = '🗣️ Voz Narradora';
+            btn.innerHTML = '🗣️ Voz Parlante Activa';
             btn.style.opacity = '1.0';
-            soundEngine.speak('Voz narradora activada.');
+            soundEngine.speak('Voz parlante activada. Pasa el ratón o toca cualquier cosa para escucharlo.');
         }
     }
 
@@ -87,16 +144,16 @@ class App {
         const speechDiv = document.getElementById('mascot-speech');
         
         const responses = {
-            alegria: { text: '¡Qué grandioso! La alegría nos llena de luz y ganas de cantar. ☀️😊', speech: '¡Qué grandioso! La alegría nos llena de luz y ganas de cantar.' },
-            tristeza: { text: 'Está bien sentirse triste a veces. Recuerda que un abrazo calientito siempre ayuda. 🌧️💙', speech: 'Está bien sentirse triste a veces. Recuerda que un abrazo calientito siempre ayuda.' },
-            enojo: { text: 'Cuando sientas enojo, recuerda detenerte y soplar la velita para calmarte. 🌬️🔥', speech: 'Cuando sientas enojo, recuerda detenerte y soplar la velita para calmarte.' },
-            miedo: { text: 'El miedo nos dice que debemos tener cuidado, pero eres muy valiente. 🛡️💜', speech: 'El miedo nos dice que debemos tener cuidado, pero eres muy valiente.' },
-            sorpresa: { text: '¡Vaya! Las sorpresas hacen que nuestros ojos brillen de asombro. 🎁⚡', speech: '¡Vaya! Las sorpresas hacen que nuestros ojos brillen de asombro.' },
-            calma: { text: 'La calma es tu superpoder. Disfruta de esta hermosa tranquilidad. 🍃✨', speech: 'La calma es tu superpoder. Disfruta de esta hermosa tranquilidad.' }
+            alegria: { text: '¡Alegre! La alegría nos llena de luz y ganas de cantar. ☀️😊', speech: '¡Estás alegre! La alegría nos llena de luz y ganas de cantar.' },
+            tristeza: { text: 'Triste. Está bien sentirse triste a veces. Un abrazo calientito siempre ayuda. 🌧️💙', speech: 'Te sientes triste. Está bien sentirse triste a veces. Un abrazo calientito siempre ayuda.' },
+            enojo: { text: 'Enojado. Cuando sientas enojo, recuerda detenerte y soplar la velita. 🌬️🔥', speech: 'Estás enojado. Cuando sientas enojo, recuerda detenerte y soplar la velita para calmarte.' },
+            miedo: { text: 'Con Miedo. El miedo nos avisa que debemos tener cuidado, pero eres muy valiente. 🛡️💜', speech: 'Tienes miedo. El miedo nos avisa que debemos tener cuidado, pero eres muy valiente.' },
+            sorpresa: { text: '¡Sorprendido! Las sorpresas hacen que nuestros ojos brillen de asombro. 🎁⚡', speech: '¡Sorprendido! Las sorpresas hacen que nuestros ojos brillen de asombro.' },
+            calma: { text: 'Tranquilo. La calma es tu superpoder. Disfruta de esta hermosa paz. 🍃✨', speech: 'Estás en calma. La calma es tu superpoder. Disfruta de esta hermosa paz.' }
         };
 
         const res = responses[emotionKey] || responses.alegria;
-        speechDiv.innerHTML = `<div class="alert-success">${res.text}</div>`;
+        speechDiv.innerHTML = `<div class="alert-success" style="font-size:1.3rem;">${res.text}</div>`;
         soundEngine.speak(res.speech);
         this.addStars(1);
     }
@@ -114,8 +171,8 @@ class App {
                     <h3 class="story-title">${st.title}</h3>
                     <p class="story-desc">${st.description}</p>
                 </div>
-                <button class="btn btn-primary" onclick="app.openStory('${st.id}')">
-                    📖 Leer Cuento
+                <button class="btn btn-primary" style="font-size:1.2rem; padding:16px;" onclick="app.openStory('${st.id}')">
+                    🔊📖 Escuchar Cuento
                 </button>
             </div>
         `).join('');
@@ -147,35 +204,37 @@ class App {
         document.getElementById('modal-story-text').innerText = page.text;
         document.getElementById('page-indicator').innerText = `Página ${this.activeStoryPage + 1} de ${total}`;
 
-        // Question rendering if exists on this page
         const qBox = document.getElementById('modal-question-box');
         if (page.question) {
             const q = page.question;
             qBox.innerHTML = `
-                <div style="background:#FFF9E6; padding:16px; border-radius:16px; border:2px solid #FFD166; margin-top:16px;">
-                    <h4 style="color:#B45309; margin-bottom:10px;">❓ Pregunta Reflexiva: ${q.prompt}</h4>
+                <div style="background:#FFF9E6; padding:20px; border-radius:20px; border:3px solid #FFD166; margin-top:16px;">
+                    <button class="btn btn-secondary" style="margin-bottom:12px; font-size:1.2rem;" onclick="soundEngine.speak('${q.prompt.replace(/'/g, "\\'")}')">
+                        🔊 Escuchar Pregunta: ${q.prompt}
+                    </button>
                     <div class="emotion-options-grid">
                         ${q.options.map((opt, i) => `
-                            <button class="btn-emotion-choice" style="background:#FFFFFF; border:2px solid #CBD5E0;" onclick="app.answerQuestion(${opt.correct}, '${opt.feedback.replace(/'/g, "\\'")}')">
+                            <button class="btn-emotion-choice" style="background:#FFFFFF; border:3px solid #CBD5E0; font-size:1.3rem; padding:20px;" onclick="app.answerQuestion(${opt.correct}, '${opt.feedback.replace(/'/g, "\\'")}')">
                                 ${opt.text}
                             </button>
                         `).join('')}
                     </div>
                 </div>
             `;
+            setTimeout(() => {
+                soundEngine.speak(q.prompt);
+            }, 2500);
         } else {
             qBox.innerHTML = '';
         }
 
-        // Auto narration
         soundEngine.speak(page.text);
 
-        // Buttons state
         document.getElementById('btn-prev-page').disabled = (this.activeStoryPage === 0);
         
         const nextBtn = document.getElementById('btn-next-page');
         if (this.activeStoryPage === total - 1) {
-            nextBtn.innerText = '🏁 Finalizar Cuento';
+            nextBtn.innerText = '🏁 Terminar Cuento';
             nextBtn.className = 'btn btn-primary';
         } else {
             nextBtn.innerText = 'Siguiente ➡️';
@@ -209,10 +268,9 @@ class App {
             this.renderStoryPage();
             soundEngine.playPop(600);
         } else {
-            // Story finished!
             this.closeStoryModal();
             soundEngine.playWin();
-            soundEngine.speak('¡Felicidades por terminar este hermoso cuento!');
+            soundEngine.speak('¡Muy bien amiguito! Terminaste el cuento y ganaste estrellas.');
             alert('🎉 ¡Felicitaciones! Has completado el cuento y ganado estrellas.');
             this.addStars(5);
         }
@@ -254,18 +312,18 @@ class App {
                 balloon.className = 'balloon inhale';
                 text.innerText = '🌬️ Inhala despacito... como oliendo una bella flor 🌸';
                 soundEngine.playCalmChime();
-                soundEngine.speak('Inhala despacito.');
+                soundEngine.speak('Inhala despacito como oliendo una flor.');
             } else {
                 balloon.className = 'balloon exhale';
                 text.innerText = '💨 Exhala suavemente... como soplando una vela 🎂';
                 soundEngine.playCalmChime();
-                soundEngine.speak('Exhala suavemente.');
+                soundEngine.speak('Exhala suavemente como soplando una vela.');
             }
             step++;
         };
 
         cycle();
-        this.breathInterval = setInterval(cycle, 4000);
+        this.breathInterval = setInterval(cycle, 4500);
     }
 
     stopBreathing() {
@@ -276,7 +334,7 @@ class App {
         const balloon = document.getElementById('magic-balloon');
         const text = document.getElementById('breath-text');
         if (balloon) balloon.className = 'balloon';
-        if (text) text.innerText = 'Presiona Iniciar para comenzar a respirar';
+        if (text) text.innerText = 'Toca Iniciar para comenzar a respirar';
         soundEngine.stopSpeech();
     }
 }
