@@ -736,6 +736,14 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Visual outline glow when spoken on hover or touch */
+.speak-active {
+    outline: 4px dashed #FF9F1C !important;
+    box-shadow: 0 0 20px rgba(255, 159, 28, 0.6) !important;
+    transform: scale(1.03);
+    transition: all 0.2s ease;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .brand-title { font-size: 1.4rem; }
@@ -745,3 +753,4 @@ body {
     .reader-img { height: 200px; }
     .reader-text { font-size: 1.1rem; }
 }
+
