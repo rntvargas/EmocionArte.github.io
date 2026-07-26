@@ -287,68 +287,71 @@
                 <p><strong>Fundamentación Pedagógica:</strong> Enfoques Constructivista y Socioemocional (Piaget, Vygotsky, Bisquerra, MINEDU 2016).</p>
 
                 <!-- Student & Session Info Inputs -->
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin:20px 0; background:#F8FAFC; padding:20px; border-radius:16px; border:2px solid #E2E8F0;">
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin:16px 0; background:#F8FAFC; padding:16px; border-radius:16px; border:2px solid #E2E8F0;">
                     <div>
-                        <label style="font-weight:bold; display:block; margin-bottom:4px;">👧👦 Nombre del Estudiante:</label>
-                        <input type="text" id="student-name" value="Estudiante de 5 Años" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:1rem;">
+                        <label style="font-weight:bold; display:block; margin-bottom:4px; font-size:0.95rem;">👧👦 Nombre del Estudiante:</label>
+                        <input type="text" id="student-name" value="Estudiante de 5 Años" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:0.95rem;">
                     </div>
                     <div>
-                        <label style="font-weight:bold; display:block; margin-bottom:4px;">🏫 Aula / Edad:</label>
-                        <input type="text" id="student-section" value="5 Años - Sección Única" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:1rem;">
+                        <label style="font-weight:bold; display:block; margin-bottom:4px; font-size:0.95rem;">🏫 Aula / Edad:</label>
+                        <input type="text" id="student-section" value="5 Años - Sección Única" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:0.95rem;">
                     </div>
                     <div>
-                        <label style="font-weight:bold; display:block; margin-bottom:4px;">👩‍🏫 Docente / Evaluador:</label>
-                        <input type="text" id="teacher-name" value="Prof. Maysha Quispe" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:1rem;">
+                        <label style="font-weight:bold; display:block; margin-bottom:4px; font-size:0.95rem;">👩‍🏫 Docente / Evaluador:</label>
+                        <input type="text" id="teacher-name" value="Prof. Maysha Quispe" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:0.95rem;">
                     </div>
                 </div>
 
-                <h3 style="margin-top:24px; font-family:var(--font-heading);">📋 Lista de Cotejo de Competencias Socioemocionales</h3>
-                <table class="rubric-table">
-                    <thead>
-                        <tr>
-                            <th>Criterio de Evaluación</th>
-                            <th style="text-align:center;">En Inicio (C)</th>
-                            <th style="text-align:center;">En Proceso (B)</th>
-                            <th style="text-align:center;">Logrado (A)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1. Reconoce e identifica emociones básicas (Alegría, Tristeza, Miedo, Enojo, Sorpresa)</td>
-                            <td style="text-align:center;"><input type="radio" name="c1" value="C"></td>
-                            <td style="text-align:center;"><input type="radio" name="c1" value="B"></td>
-                            <td style="text-align:center;"><input type="radio" name="c1" value="A" checked></td>
-                        </tr>
-                        <tr>
-                            <td>2. Aplica la autorregulación mediante la respiración consciente y el semáforo</td>
-                            <td style="text-align:center;"><input type="radio" name="c2" value="C"></td>
-                            <td style="text-align:center;"><input type="radio" name="c2" value="B" checked></td>
-                            <td style="text-align:center;"><input type="radio" name="c2" value="A"></td>
-                        </tr>
-                        <tr>
-                            <td>3. Demuestra empatía, solidaridad y respeto hacia sus compañeros</td>
-                            <td style="text-align:center;"><input type="radio" name="c3" value="C"></td>
-                            <td style="text-align:center;"><input type="radio" name="c3" value="B"></td>
-                            <td style="text-align:center;"><input type="radio" name="c3" value="A" checked></td>
-                        </tr>
-                        <tr>
-                            <td>4. Resuelve conflictos mediante el diálogo y la comunicación asertiva</td>
-                            <td style="text-align:center;"><input type="radio" name="c4" value="C"></td>
-                            <td style="text-align:center;"><input type="radio" name="c4" value="B" checked></td>
-                            <td style="text-align:center;"><input type="radio" name="c4" value="A"></td>
-                        </tr>
-                        <tr>
-                            <td>5. Participa activamente en actividades digitales y cuentos interactivos</td>
-                            <td style="text-align:center;"><input type="radio" name="c5" value="C"></td>
-                            <td style="text-align:center;"><input type="radio" name="c5" value="B"></td>
-                            <td style="text-align:center;"><input type="radio" name="c5" value="A" checked></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3 style="margin-top:20px; font-family:var(--font-heading); font-size:1.2rem;">📋 Lista de Cotejo de Competencias Socioemocionales</h3>
+                
+                <div class="table-responsive">
+                    <table class="rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Criterio de Evaluación</th>
+                                <th style="text-align:center; min-width:85px;">En Inicio (C)</th>
+                                <th style="text-align:center; min-width:85px;">En Proceso (B)</th>
+                                <th style="text-align:center; min-width:85px;">Logrado (A)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. Reconoce e identifica emociones básicas (Alegría, Tristeza, Miedo, Enojo, Sorpresa)</td>
+                                <td style="text-align:center;"><input type="radio" name="c1" value="C"></td>
+                                <td style="text-align:center;"><input type="radio" name="c1" value="B"></td>
+                                <td style="text-align:center;"><input type="radio" name="c1" value="A" checked></td>
+                            </tr>
+                            <tr>
+                                <td>2. Aplica la autorregulación mediante la respiración consciente y el semáforo</td>
+                                <td style="text-align:center;"><input type="radio" name="c2" value="C"></td>
+                                <td style="text-align:center;"><input type="radio" name="c2" value="B" checked></td>
+                                <td style="text-align:center;"><input type="radio" name="c2" value="A"></td>
+                            </tr>
+                            <tr>
+                                <td>3. Demuestra empatía, solidaridad y respeto hacia sus compañeros</td>
+                                <td style="text-align:center;"><input type="radio" name="c3" value="C"></td>
+                                <td style="text-align:center;"><input type="radio" name="c3" value="B"></td>
+                                <td style="text-align:center;"><input type="radio" name="c3" value="A" checked></td>
+                            </tr>
+                            <tr>
+                                <td>4. Resuelve conflictos mediante el diálogo y la comunicación asertiva</td>
+                                <td style="text-align:center;"><input type="radio" name="c4" value="C"></td>
+                                <td style="text-align:center;"><input type="radio" name="c4" value="B" checked></td>
+                                <td style="text-align:center;"><input type="radio" name="c4" value="A"></td>
+                            </tr>
+                            <tr>
+                                <td>5. Participa activamente en actividades digitales y cuentos interactivos</td>
+                                <td style="text-align:center;"><input type="radio" name="c5" value="C"></td>
+                                <td style="text-align:center;"><input type="radio" name="c5" value="B"></td>
+                                <td style="text-align:center;"><input type="radio" name="c5" value="A" checked></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <div style="margin-top:24px; display:flex; gap:16px; flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="app.exportProgressReport()">🖨️ Exportar e Imprimir Ficha en PDF</button>
-                    <button class="btn btn-secondary" onclick="app.downloadReportText()">📥 Descargar Ficha en Texto (.txt)</button>
+                <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" style="flex:1; min-width:200px; padding:14px;" onclick="app.exportProgressReport()">📄 Guardar Ficha en PDF / Imprimir</button>
+                    <button class="btn btn-secondary" style="flex:1; min-width:200px; padding:14px;" onclick="app.downloadReportText()">📥 Descargar Ficha en Texto (.txt)</button>
                 </div>
             </div>
         </section>
