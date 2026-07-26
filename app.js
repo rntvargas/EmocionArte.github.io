@@ -121,9 +121,9 @@ class App {
             btn.innerHTML = '🔇 Voz Apagada';
             btn.style.opacity = '0.6';
         } else {
-            btn.innerHTML = '🗣️ Voz Parlante Activa';
+            btn.innerHTML = '🗣️ Voz Narradora';
             btn.style.opacity = '1.0';
-            soundEngine.speak('Voz parlante activada. Pasa el ratón o toca cualquier cosa para escucharlo.');
+            soundEngine.speak('Voz narradora activada. Pasa el ratón o toca cualquier cosa para escucharlo.');
         }
     }
 
