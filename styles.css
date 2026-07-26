@@ -744,6 +744,32 @@ body {
     transition: all 0.2s ease;
 }
 
+/* Print styles for official report export */
+@media print {
+    body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+    }
+    .app-header, .app-nav, .btn, .header-actions {
+        display: none !important;
+    }
+    .main-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+    #view-docentes {
+        display: block !important;
+    }
+    .dashboard-card {
+        box-shadow: none !important;
+        border: 2px solid #000000 !important;
+        padding: 20px !important;
+    }
+    .rubric-table th, .rubric-table td {
+        border: 1px solid #000000 !important;
+    }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .brand-title { font-size: 1.4rem; }

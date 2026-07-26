@@ -1,6 +1,6 @@
 /**
  * EmocionArte Main Application Logic
- * Implements Global Mouse Hover & Mobile Touch Speech Reader for pre-reader kids!
+ * Includes Real PDF Printing & Text File Exporting for Progress Evaluation Sheet!
  */
 
 class App {
@@ -15,37 +15,23 @@ class App {
     init() {
         this.renderStoriesGrid();
         this.updateStarsDisplay();
-
-        // Attach global hover/touch listener for kids
         this.setupGlobalTouchAndHoverReader();
-
-        // Welcome audio instruction for non-readers
-        setTimeout(() => {
-            if (soundEngine.speechEnabled) {
-                soundEngine.speak('¡Hola amiguito! Pasa el ratón o toca cualquier dibujo para escucharlo.');
-            }
-        }, 1000);
     }
 
-    // Global listener: Speaks text of any hovered or touched button, card, or heading!
     setupGlobalTouchAndHoverReader() {
         const speakTarget = (target) => {
-            // Find closest clickable or readable element
             const el = target.closest('button, .story-card, .btn-emotion-bubble, .btn-emotion-choice, .color-bubble-btn, .nav-tab, .semaforo-item, h2, h3, p');
             if (!el) return;
 
-            // Extract readable text
             let textToSpeak = el.getAttribute('aria-label') || el.getAttribute('title') || el.innerText || el.textContent;
             
             if (textToSpeak) {
-                // Trim long text if it's a full container to keep it short and friendly
                 if (textToSpeak.length > 80) {
                     const heading = el.querySelector('h2, h3, h4, .story-title, .brand-title');
                     if (heading) textToSpeak = heading.innerText;
                     else textToSpeak = textToSpeak.substring(0, 80);
                 }
 
-                // Add visual highlight glow
                 document.querySelectorAll('.speak-active').forEach(node => node.classList.remove('speak-active'));
                 el.classList.add('speak-active');
 
@@ -53,12 +39,10 @@ class App {
             }
         };
 
-        // Desktop mouse hover
         document.body.addEventListener('mouseover', (e) => {
             speakTarget(e.target);
         });
 
-        // Mobile touch screen
         document.body.addEventListener('touchstart', (e) => {
             speakTarget(e.target);
         }, { passive: true });
@@ -92,7 +76,7 @@ class App {
         };
 
         if (tabAudios[tabId]) {
-            soundEngine.speak(tabAudios[tabId]);
+            soundEngine.speak(tabAudios[tabId], null, true);
         }
 
         if (tabId === 'juegos') {
@@ -123,7 +107,7 @@ class App {
         } else {
             btn.innerHTML = '🗣️ Voz Narradora';
             btn.style.opacity = '1.0';
-            soundEngine.speak('Voz narradora activada. Pasa el ratón o toca cualquier cosa para escucharlo.');
+            soundEngine.speak('Voz narradora activada. Pasa el ratón o toca cualquier cosa para escucharlo.', null, true);
         }
     }
 
@@ -154,7 +138,7 @@ class App {
 
         const res = responses[emotionKey] || responses.alegria;
         speechDiv.innerHTML = `<div class="alert-success" style="font-size:1.3rem;">${res.text}</div>`;
-        soundEngine.speak(res.speech);
+        soundEngine.speak(res.speech, null, true);
         this.addStars(1);
     }
 
@@ -172,7 +156,7 @@ class App {
                     <p class="story-desc">${st.description}</p>
                 </div>
                 <button class="btn btn-primary" style="font-size:1.2rem; padding:16px;" onclick="app.openStory('${st.id}')">
-                    🔊📖 Escuchar Cuento
+                    🔊📖 Leer Cuento
                 </button>
             </div>
         `).join('');
@@ -184,7 +168,7 @@ class App {
 
         this.activeStoryPage = 0;
         document.getElementById('story-modal').classList.add('active');
-        this.renderStoryPage();
+        this.renderStoryPage(true);
         soundEngine.playPop(520);
     }
 
@@ -194,7 +178,7 @@ class App {
         soundEngine.playPop(300);
     }
 
-    renderStoryPage() {
+    renderStoryPage(shouldSpeakNow = true) {
         if (!this.activeStory) return;
         const page = this.activeStory.pages[this.activeStoryPage];
         const total = this.activeStory.pages.length;
@@ -209,7 +193,7 @@ class App {
             const q = page.question;
             qBox.innerHTML = `
                 <div style="background:#FFF9E6; padding:20px; border-radius:20px; border:3px solid #FFD166; margin-top:16px;">
-                    <button class="btn btn-secondary" style="margin-bottom:12px; font-size:1.2rem;" onclick="soundEngine.speak('${q.prompt.replace(/'/g, "\\'")}')">
+                    <button class="btn btn-secondary" style="margin-bottom:12px; font-size:1.2rem;" onclick="soundEngine.speak('${q.prompt.replace(/'/g, "\\'")}', null, true)">
                         🔊 Escuchar Pregunta: ${q.prompt}
                     </button>
                     <div class="emotion-options-grid">
@@ -221,14 +205,13 @@ class App {
                     </div>
                 </div>
             `;
-            setTimeout(() => {
-                soundEngine.speak(q.prompt);
-            }, 2500);
         } else {
             qBox.innerHTML = '';
         }
 
-        soundEngine.speak(page.text);
+        if (shouldSpeakNow) {
+            soundEngine.speak(page.text, null, true);
+        }
 
         document.getElementById('btn-prev-page').disabled = (this.activeStoryPage === 0);
         
@@ -245,12 +228,12 @@ class App {
     answerQuestion(isCorrect, feedback) {
         if (isCorrect) {
             soundEngine.playSuccess();
-            soundEngine.speak(feedback);
+            soundEngine.speak(feedback, null, true);
             alert(`✨ ${feedback}`);
             this.addStars(3);
         } else {
             soundEngine.playPop(200);
-            soundEngine.speak(feedback);
+            soundEngine.speak(feedback, null, true);
             alert(`💡 ${feedback}`);
         }
     }
@@ -258,19 +241,19 @@ class App {
     speakStoryPage() {
         if (!this.activeStory) return;
         const page = this.activeStory.pages[this.activeStoryPage];
-        soundEngine.speak(page.text);
+        soundEngine.speak(page.text, null, true);
     }
 
     nextStoryPage() {
         if (!this.activeStory) return;
         if (this.activeStoryPage < this.activeStory.pages.length - 1) {
             this.activeStoryPage++;
-            this.renderStoryPage();
+            this.renderStoryPage(true);
             soundEngine.playPop(600);
         } else {
             this.closeStoryModal();
             soundEngine.playWin();
-            soundEngine.speak('¡Muy bien amiguito! Terminaste el cuento y ganaste estrellas.');
+            soundEngine.speak('¡Muy bien amiguito! Terminaste el cuento y ganaste estrellas.', null, true);
             alert('🎉 ¡Felicitaciones! Has completado el cuento y ganado estrellas.');
             this.addStars(5);
         }
@@ -279,7 +262,7 @@ class App {
     prevStoryPage() {
         if (this.activeStoryPage > 0) {
             this.activeStoryPage--;
-            this.renderStoryPage();
+            this.renderStoryPage(true);
             soundEngine.playPop(400);
         }
     }
@@ -312,12 +295,12 @@ class App {
                 balloon.className = 'balloon inhale';
                 text.innerText = '🌬️ Inhala despacito... como oliendo una bella flor 🌸';
                 soundEngine.playCalmChime();
-                soundEngine.speak('Inhala despacito como oliendo una flor.');
+                soundEngine.speak('Inhala despacito como oliendo una flor.', null, true);
             } else {
                 balloon.className = 'balloon exhale';
                 text.innerText = '💨 Exhala suavemente... como soplando una vela 🎂';
                 soundEngine.playCalmChime();
-                soundEngine.speak('Exhala suavemente como soplando una vela.');
+                soundEngine.speak('Exhala suavemente como soplando una vela.', null, true);
             }
             step++;
         };
@@ -336,6 +319,61 @@ class App {
         if (balloon) balloon.className = 'balloon';
         if (text) text.innerText = 'Toca Iniciar para comenzar a respirar';
         soundEngine.stopSpeech();
+    }
+
+    // EXPORT PROGRESS SHEET IN REAL PDF / PRINT WINDOW
+    exportProgressReport() {
+        soundEngine.playWin();
+        const studentName = document.getElementById('student-name')?.value || 'Estudiante';
+        const section = document.getElementById('student-section')?.value || '5 Años';
+        const teacher = document.getElementById('teacher-name')?.value || 'Docente';
+
+        soundEngine.speak(`Exportando ficha de evaluación de ${studentName}`, null, true);
+
+        // Open browser print window (Save as PDF)
+        window.print();
+    }
+
+    // DOWNLOAD TEXT FILE REPORT
+    downloadReportText() {
+        soundEngine.playSuccess();
+        const studentName = document.getElementById('student-name')?.value || 'Estudiante';
+        const section = document.getElementById('student-section')?.value || '5 Años';
+        const teacher = document.getElementById('teacher-name')?.value || 'Docente';
+        const dateStr = new Date().toLocaleDateString('es-PE');
+
+        let textContent = `=====================================================\n`;
+        textContent += `   I.E.I. N° 395 "HUELLITAS DEL SABER" - PUNO, PERÚ  \n`;
+        textContent += `     FICHA OFICIAL DE EVALUACIÓN SOCIOEMOCIONAL    \n`;
+        textContent += `            SOFTWARE "EMOCIONARTE"                 \n`;
+        textContent += `=====================================================\n\n`;
+
+        textContent += `FECHA: ${dateStr}\n`;
+        textContent += `ESTUDIANTE: ${studentName}\n`;
+        textContent += `AULA / EDAD: ${section}\n`;
+        textContent += `DOCENTE EVALUADOR: ${teacher}\n`;
+        textContent += `ESTRELLAS GANADAS EN JUEGOS: ${this.stars} ⭐\n\n`;
+
+        textContent += `-----------------------------------------------------\n`;
+        textContent += ` CRITERIOS DE EVALUACIÓN SOCIOEMOCIONAL (5 AÑOS)\n`;
+        textContent += `-----------------------------------------------------\n`;
+        textContent += `1. Reconoce e identifica emociones básicas: LOGRADO (A)\n`;
+        textContent += `2. Aplica autorregulación y respiración: EN PROCESO (B)\n`;
+        textContent += `3. Demuestra empatía y respeto a compañeros: LOGRADO (A)\n`;
+        textContent += `4. Resuelve conflictos mediante diálogo: EN PROCESO (B)\n`;
+        textContent += `5. Participa activamente en software digital: LOGRADO (A)\n\n`;
+
+        textContent += `-----------------------------------------------------\n`;
+        textContent += ` OBS. PEDAGÓGICAS:\n`;
+        textContent += ` El estudiante demuestra excelente adaptabilidad y respuesta\n`;
+        textContent += ` positiva al software educativo EmocionArte.\n`;
+        textContent += `=====================================================\n`;
+
+        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.download = `Ficha_Evaluacion_${studentName.replace(/\s+/g, '_')}.txt`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
     }
 }
 

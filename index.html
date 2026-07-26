@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EmocionArte - Software Interactivo de Inteligencia Emocional</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>">
     <meta name="description" content="Software interactivo para el desarrollo de la inteligencia emocional en niños y niñas de 5 años. I.E.I. N° 395 Huellitas del Saber.">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -280,51 +281,74 @@
 
         <!-- VIEW 6: DOCENTE Y FAMILIAS -->
         <section id="view-docentes" class="view-section">
-            <div class="dashboard-card">
-                <h2 class="dashboard-title">📘 Marco Pedagógico & Guía Educativa "EmocionArte"</h2>
+            <div class="dashboard-card" id="printable-report">
+                <h2 class="dashboard-title">📘 Ficha Oficial de Evaluación Socioemocional "EmocionArte"</h2>
                 <p><strong>Institución Educativa Inicial:</strong> N° 395 "Huellitas del Saber" • Puno, Perú</p>
-                <p><strong>Fundamentación Pedagógica:</strong> Basado en el Enfoque Constructivista (Piaget, 1970), Socio-cultural (Vygotsky, 1978), Educación Emocional (Bisquerra, 2009) y Aprendizaje Significativo (Ausubel, 2002), alineado al Currículo Nacional (MINEDU, 2016).</p>
+                <p><strong>Fundamentación Pedagógica:</strong> Enfoques Constructivista y Socioemocional (Piaget, Vygotsky, Bisquerra, MINEDU 2016).</p>
 
-                <h3 style="margin-top:24px; font-family:var(--font-heading);">📋 Lista de Cotejo de Evaluación Socioemocional (Niños 5 Años)</h3>
+                <!-- Student & Session Info Inputs -->
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin:20px 0; background:#F8FAFC; padding:20px; border-radius:16px; border:2px solid #E2E8F0;">
+                    <div>
+                        <label style="font-weight:bold; display:block; margin-bottom:4px;">👧👦 Nombre del Estudiante:</label>
+                        <input type="text" id="student-name" value="Estudiante de 5 Años" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:1rem;">
+                    </div>
+                    <div>
+                        <label style="font-weight:bold; display:block; margin-bottom:4px;">🏫 Aula / Edad:</label>
+                        <input type="text" id="student-section" value="5 Años - Sección Única" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:1rem;">
+                    </div>
+                    <div>
+                        <label style="font-weight:bold; display:block; margin-bottom:4px;">👩‍🏫 Docente / Evaluador:</label>
+                        <input type="text" id="teacher-name" value="Prof. Maysha Quispe" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E0; font-size:1rem;">
+                    </div>
+                </div>
+
+                <h3 style="margin-top:24px; font-family:var(--font-heading);">📋 Lista de Cotejo de Competencias Socioemocionales</h3>
                 <table class="rubric-table">
                     <thead>
                         <tr>
                             <th>Criterio de Evaluación</th>
-                            <th>En Inicio (C)</th>
-                            <th>En Proceso (B)</th>
-                            <th>Logrado (A)</th>
+                            <th style="text-align:center;">En Inicio (C)</th>
+                            <th style="text-align:center;">En Proceso (B)</th>
+                            <th style="text-align:center;">Logrado (A)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Identifica emociones básicas (Alegría, Tristeza, Miedo, Enojo, Sorpresa)</td>
-                            <td><input type="radio" name="r1"></td>
-                            <td><input type="radio" name="r1"></td>
-                            <td><input type="radio" name="r1" checked></td>
+                            <td>1. Reconoce e identifica emociones básicas (Alegría, Tristeza, Miedo, Enojo, Sorpresa)</td>
+                            <td style="text-align:center;"><input type="radio" name="c1" value="C"></td>
+                            <td style="text-align:center;"><input type="radio" name="c1" value="B"></td>
+                            <td style="text-align:center;"><input type="radio" name="c1" value="A" checked></td>
                         </tr>
                         <tr>
-                            <td>Aplica la autorregulación mediante la respiración consciente y el semáforo</td>
-                            <td><input type="radio" name="r2"></td>
-                            <td><input type="radio" name="r2" checked></td>
-                            <td><input type="radio" name="r2"></td>
+                            <td>2. Aplica la autorregulación mediante la respiración consciente y el semáforo</td>
+                            <td style="text-align:center;"><input type="radio" name="c2" value="C"></td>
+                            <td style="text-align:center;"><input type="radio" name="c2" value="B" checked></td>
+                            <td style="text-align:center;"><input type="radio" name="c2" value="A"></td>
                         </tr>
                         <tr>
-                            <td>Demuestra empatía y respeto hacia sus compañeros en el juego</td>
-                            <td><input type="radio" name="r3"></td>
-                            <td><input type="radio" name="r3"></td>
-                            <td><input type="radio" name="r3" checked></td>
+                            <td>3. Demuestra empatía, solidaridad y respeto hacia sus compañeros</td>
+                            <td style="text-align:center;"><input type="radio" name="c3" value="C"></td>
+                            <td style="text-align:center;"><input type="radio" name="c3" value="B"></td>
+                            <td style="text-align:center;"><input type="radio" name="c3" value="A" checked></td>
                         </tr>
                         <tr>
-                            <td>Resuelve conflictos utilizando el diálogo y la comunicación asertiva</td>
-                            <td><input type="radio" name="r4"></td>
-                            <td><input type="radio" name="r4" checked></td>
-                            <td><input type="radio" name="r4"></td>
+                            <td>4. Resuelve conflictos mediante el diálogo y la comunicación asertiva</td>
+                            <td style="text-align:center;"><input type="radio" name="c4" value="C"></td>
+                            <td style="text-align:center;"><input type="radio" name="c4" value="B" checked></td>
+                            <td style="text-align:center;"><input type="radio" name="c4" value="A"></td>
+                        </tr>
+                        <tr>
+                            <td>5. Participa activamente en actividades digitales y cuentos interactivos</td>
+                            <td style="text-align:center;"><input type="radio" name="c5" value="C"></td>
+                            <td style="text-align:center;"><input type="radio" name="c5" value="B"></td>
+                            <td style="text-align:center;"><input type="radio" name="c5" value="A" checked></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div style="margin-top:20px;">
-                    <button class="btn btn-primary" onclick="alert('Reporte de evaluación listo para impresión / exportación.'); soundEngine.playSuccess();">🖨️ Exportar Ficha de Progreso</button>
+                <div style="margin-top:24px; display:flex; gap:16px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="app.exportProgressReport()">🖨️ Exportar e Imprimir Ficha en PDF</button>
+                    <button class="btn btn-secondary" onclick="app.downloadReportText()">📥 Descargar Ficha en Texto (.txt)</button>
                 </div>
             </div>
         </section>
@@ -349,7 +373,7 @@
             <div class="reader-actions">
                 <button class="btn btn-secondary" id="btn-prev-page" onclick="app.prevStoryPage()">⬅️ Anterior</button>
 
-                <button class="btn btn-secondary" onclick="app.speakStoryPage()">🔊 Leer en voz alta</button>
+                <button class="btn btn-primary" style="font-size:1.2rem; padding:16px 28px; background:linear-gradient(135deg, #06D6A0 0%, #059669 100%); color:#FFF;" onclick="app.speakStoryPage()">🔊 Leer esta Página</button>
 
                 <div id="page-indicator" style="font-weight:bold; font-family:var(--font-heading);">Página 1</div>
 
